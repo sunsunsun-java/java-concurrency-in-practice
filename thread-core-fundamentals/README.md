@@ -51,6 +51,51 @@ The `main` method threads and `system` group threads created by the JVM are not 
 
 ## Methods for stopping threads
 
+**principle - Use `interrupt` to notify, not to force.**
+
+In Java, the best way to stop a thread is to use `interrupt` , but this only notifies the terminated thread that "you should stop running", the terminated thread itself has the right to decide(if and when to stop), depending on both the requesting and the terminated party adhering to an agreed coding specification.
+
+Java doesn't provide any mechanism to safely terminate threads. But it does provide `interrupt()`, a collaborative mechanism that enables one thread to terminate the current work of another thread.
+
+### The right way to stop - `interrupt`
+
+1.When is a thread usually stopped in the ordinary case?
+
+`RightWayStopThreadWithoutSleep.java`
+
+2.Threads may be blocked.
+
+`RightWayStopThreadWithSleep.java`
+
+3.If a thread blocks after each iteration.
+
+`RightWayStopThreadWithSleepEveryLoop.java`
+
+4.The problem of `try/catch` within `while` 
+
+`CannotInterrupt.java`
+
+5 .Two best practices in practical development
+
+- **Preferences - Passing Interrupts** `RightWayStopThreadInProd.java`
+- **Don't want to  do or can't pass InterruptedException - Recovery interruption **`RightWayStopThreadInProd2.java`
+
+Another, Interrupts should not be blocked.
+
+6.Summary list of methods for responding to interrupts
+
+- `Object.wait()/wait(long)/wait(long, int)`
+- `Thread.sleep(long)/slepp(long, int)`
+- `Thread.join()/join(long)/join(long, int)`
+- `java.util.concurrent.BlockingQueue.take()/put(E)`
+- `java.util.concurrent.locks.Lock.lockInterruptibly()`
+- `java.util.concurrent.CountDownLatch.await()`
+- `java.util.concurrent.CyclicBarrier.exchange(V)`
+- `java.nio.channels.InterruptibleChannel` Related methods
+- `java.nio.channels.Selector` Related methods
+
+
+
 
 
 ## The state of the thread
