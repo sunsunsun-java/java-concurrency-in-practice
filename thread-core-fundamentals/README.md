@@ -141,11 +141,155 @@ At last, the wrong way to stop has `stop()/suspend()`, and `volatile` which sets
 
 the state of block - BLOCKED、WAITING、TIMED_WAITING
 
+**Attention**
+
+1.When you make up from `Object.wait()` state, you usually can't grab the monitor lock immediately, so you  will go from `WAITING` state to `BLOCKED` state first, and then switch to `RUNNABLE` state after grabbing the lock.
+
+2.If an exception occurs, you can jump directly to the `TERMINATED` state and do not have to follow the path.
+
 
 
 ## Important methods about thread in `Thread` and `Object`
 
+### `Object`
 
+#### `wait` `notify` `notifyAll`
+
+Let threads rest temporarily and wake up.
+
+**Blocking phase**
+
+Until one of the following 4 conditions occurs, it will be awakened.
+
+1. Another thread calls the `notify()` method of this object and it is this thread that happens to be woken up.
+2. Another thread calls the `notifyAll()` method of this object.
+3. After the timeout specified by the `wait(long timeout)` method of this object.(the parameter passed in 0 represents a permanent wait)
+4. The thread itself calls `interrupt()`
+
+**Wake-up phase**
+
+**Interruption encounted**
+
+`Wait4Object.java`
+
+`WaitNotifyAll.java`
+
+`WaitNotifyReleaseOwnMonitor.java`
+
+**Nature**
+
+- You must have the monitor lock before you can use it.
+- The notification can only wake up one of them at random.
+- Belong to the Object class.
+- Similar functions are `Condition`
+
+**Principle**
+
+<img src="C:\Users\sun\Desktop\homework\java-concurrency-in-practice\thread-core-fundamentals\wait原理.png" style="zoom:50%;" />
+
+When you make up from `Object.wait()` state, you usually can't grab the monitor lock immediately, so you  will go from `WAITING` state to `BLOCKED` state first, and then switch to `RUNNABLE` state after grabbing the lock.
+
+If an exception occurs, you can jump directly to the `TERMINATED` state and do not have to follow the path.
+
+#### Common Interview Questions
+
+1. Producer-Consumer Design Pattern
+
+   `ProducerConsumerModel.java`
+
+2. Use the program to implement two threads to alternately print the odd and even numbers from 0 to 100
+
+   `WaitNotifyPrintOddEvenSyn.java` `WaitNotifyPrintOddEveWait.java`
+
+3. Why does `wait()` need to be used within a synchronous code block, but `sleep()` does not?
+
+   `synchronized` ensures that the `wait` method must be executed before the `notify`method.`sleep` is only for its own thread, not for other threads.
+
+4. Why are the methods `wait()`, `notify()` and `notifyAll()` for thread communication defined in the `Object.java` class? And `sleep()` is defined in the `Thread.java` class?
+
+    `wait()`, `notify()` and `notifyAll()` are lock-level operations where the lock belongs to an object, so the lock is bound to an object and not to a thread.If they were defined in threads, there would be limitations to their use.When a thread has multiple locks and the locks need to cooperate with each other, this definition does not meet the requirements. 
+
+5. What happens if `Thread.wait()` is called?
+
+    This will cause a problem.When the thread exits it will automatically call `notify`, which will interfere with your own design of the wake-up mechanism.So it is not recommended to use the `wait` method of Thread class.
+
+### `Thread`
+
+#### `sleep`
+
+Only want the thread to execute at the expected time and not take CPU resurces at other times.
+
+1. In addition, it does not release the lock(eg: `synchronized` `lock`).
+
+   `SleepDontReleaseMonitor.java` `SleepDontReleaseLock.java`
+
+2. it responds to interrupts(throw `InterruptedException` and clear interrupt status)
+
+   `SleepInterrupted.java`
+
+**Summary**
+
+The `sleep` method allows the thread to enter the `WAITING` state and does not occupy CPU resources, but does not release the lock until after a specified time.If it is interrupted during sleep, an exception is thrown and the interrupted state is cleared.
+
+**Q: What are the similarities and differences between the `wait()` and `sleep()` methods?**
+
+The similarities
+
+1. They can both block the thread, corresponding to the thread state `WAITING` or `TIME_WAITING`
+2. They can both respond to interrupts `Thread.interrupt()`
+
+The differences
+
+1. The execution of the `wait()` method must be done in the synchronous method, while `sleep()` is not required.
+2. The monitor lock is not released when the `sleep()` method is executed in the synchronous method, but the `wait()` method can release the monitor lock.
+3. The `sleep()` method will voluntarily exit blocking after a short hibernation, while the `wait()` method, which has no specified time, needs to be interrupted by other threads before it can exit blocking. 
+4. The `wait()` is a method of the `Object` class, but the `sleep()` is a method of the `Thread` class.
+
+#### `join`
+
+Wait for other threads to finish executing.
+
+`JoinOne.java`
+
+`JoinInterrupt.java`
+
+`JoinThreadState.java`
+
+**Principle**
+
+`JoinPrinciple.java`
+
+```java
+thread.join();
+==>
+synchronized(thread) {
+    thread.wait();
+}
+```
+
+**Q: Which thread state is the thread in during the `join`**
+
+#### `yield`
+
+Give up the CPU resources already acquired.
+
+The difference between `yield()` and `sleep()` methods - Is it possible to be scheduled again?
+
+#### `currentThread`
+
+Get a reference to the currently executing thread.
+
+#### `start` `run`
+
+Start-up related
+
+#### `interrupt`
+
+Interrupting threads
+
+#### `stop` `suspend` `resuem`
+
+Deprecated
 
 
 
