@@ -295,14 +295,94 @@ Deprecated
 
 ## Properties of threads
 
+#### `Thread ID`
 
+Each thread has its own ID, which is used to identify the different threads.
+
+#### `Thread name`
+
+It is used to distinguish each different thread, **locate the problem**.
+
+#### `Guard Thread`
+
+True for daemon threads, False for user threads.
+
+Three properties
+
+- Thread types inherit from parent threads by default
+- It is usually started automatically by the JVM
+- Does not affect JVM exit
+
+**Q1:What is the difference between a daemon thread and a regular thread?**
+
+Overall there is no difference.The only difference is whether it affects the JVM leaving.
+
+**Q2:Do I need to set the thread as a daemon thread?**
+
+We should not set a regular thread as a daemon thread.
+
+#### `Thread Priority`	
+
+10 levels, default is 5.
+
+Program design should not depend on priorities.Because the first reason is that priorities are not the same for different operating systems, and the second reason is that priorities can be changed by the operating system.
 
 ## How to handle `UncaughtException` in threads
 
+Why do you need `UncaughtExceptionHandler`?
 
+1. The main thread can easily find exceptions, but the child thread cannot.
+2. Sub-thread exceptions cannot be caught by traditional methods.
+
+Solutions
+
+1. do `try catch` in the current thread.(Not recommended)
+2. use `UncaughtExceptionHandler`
+
+`MyUncaughtExceptionHandler.java`
+
+`UseOwnUncaughtExceptionHandler.java`
 
 ## Threads are double-edged swords
 
+#### Thread Safe
 
+In despite of the business multi-threaded access to a certain object or method, we do not need to do additional task processing when writing business code, the program can be executed normally as well, which can be called thread-safe.
+
+**What are the circumstances under which thread safety issues arise and how can they be avoided?**
+
+- Run result error - `a++` disappearing request phenomenon under multi-threaded
+
+  `MultiThreadError.java`
+
+- Activation issues - deadlock, live lock, starvation
+
+  `MultiThreadError1.java`
+
+- Security issues when publishing and initializing objects
+
+**When does the escape occur?**
+
+1. The method returns a private object(`private` is meant to be inaccessible to the outside world.)
+2. Make the object available to the outside world before it has been fully initialized.
+   - Assign a value using `this` before it has been fully initialized in the constructor method
+   - Implicit escape - registering to listen to events
+   - Running threads in the constructor method
+
+**Need to consider thread safety**
+
+- Accessing shared variables or resources.(Properties of the object、Static Variables、Shared Cache、Database)
+- All timing-dependent operations.(read-modify-write、check-then-act)
+- Bundling of different data exists
+- Using classes that are not explicitly declared thread-safe
+
+#### Performance Issues
+
+#### Why does multi-threading have performance problems?
+
+**Scheduling - Context Switching**
+
+**Collaboration - Memory Synchronization**
 
 ## Common Interview Questions
+
