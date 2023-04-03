@@ -3,7 +3,7 @@ package threadcoreknowledge.threadobjectclasscommonmethods;
 /**
  * @Description: 两个线程交替打印0~100的奇偶数，用wait和notify
  */
-public class WaitNotifyPrintOddEveWait {
+public class WaitNotifyPrintOddEvenWait {
     
     private static volatile int count = 0;
     private static final Object lock = new Object();
