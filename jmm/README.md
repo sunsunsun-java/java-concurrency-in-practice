@@ -62,15 +62,109 @@ OverAll, all shared variables exist in main memory, each thread has its own loca
 
 ### Happens-Before Principles
 
+If an operation happens-before another operation, then we say that the first operation is visible to the second operation.
+
+#### Principles
+
+1.Single-threaded principle
+
+**2.Lock operation(`sychronized` and `Lock`)**
+
+<img src="C:\Users\sun\Desktop\homework\java-concurrency-in-practice\jmm\锁操作Happens-before1.png" style="zoom:50%;" />
+
+<img src="C:\Users\sun\Desktop\homework\java-concurrency-in-practice\jmm\锁操作Happens-before2.png" style="zoom:50%;" />
+
+**3.`volatile`**
+
+4.Thread start
+
+5.Thread `join`
+
+6.Transmissibility
+
+7.interrupt
+
+8.the happens-before principle for tools
+
+- `CountDownLatch`
+- `Semaphore`
+- `Future`
+- `Thread Pool`
+- `CyclicBarrier`
+
 
 
 ### `volatile` keyword
 
+`volatile` is a synchronization mechanism that is lighter than `synchronized` or Lock-related classes because no overhead behavior such as context switching occurs with `volatile`.
 
+If it's a variable that is modified by `volatile`, then the JVM knows that the variable may be modified concurrently.
+Although `volatile` is used for synchronization to ensure thread safety, `volatile` **does not offer the same atomic protection as** `synchronized`.
+
+**Not Applicable Scenarios**
+
+`NoVolatile.java`
+
+`NoVolatile2.java`
+
+**Applicable Scenarios**
+
+1. `boolean flag` (lf a shared variable is only assigned by individual threads and no other operations are performed, then `volatile` can be used instead of `synchronized` and other atomic variables because the assignment itself is atomic and `volatile` ensures visibility, so it is thread-safe.)
+
+   `UseVolatile1.java`
+
+2. As a trigger for refreshing previous variables.
+
+   `UseVolatile2.java`
+
+**Effects**
+
+1. **Visibility** - Before reading a `volatile` variable, you need to invalidate the local cache and read the latest value in main memory.Writing a `volatile` variable will immediately flush it to main memory.
+2. Prohibit command reordering optimization
+
+**What is the relationship between `volatile`  and `synchronized`?**
+
+`volatile` can be thought of as a lightweight version of `synchronized` - if a shared variable is only assigned by individual threads and no other operations are performed, then `volatile` can be used instead of `synchronized` because the assignment operation is atomic and `volatile` guarantees visibility, making it thread-safe.
+
+**Summary**
+
+1. The `volatile` modifier is suitable for scenarios where a property is shared by multiple threads and one of them modifies the property so that the other threads can immediately get the repaired value.
+2. `volatile` property read and write operations are lock-free, it can not replace `synchronized`, because it does not provide atomicity and mutually exclusive body.
+3. `volatile` provides the happens-before principle, where writes to a `volatile` variable `v` happens-before all subsequent reads for `v` by other threads.
+4. `volatile` can make the assignment of `long` and `double` atomic.
 
 ### Measures to ensure visibility
 
-
+1. In adition to `volatile`, which allows variables to guarantee visibility, `synchronized` / `Lock` / concurrent collections / `Thread.join()` / `Thread.start()` all guarantee visibility.
+2. See happens-before principle
 
 ### The correct understanding of `synchronized` visibility
 
+1. `synchronized` not only guarantees **atomicity**, but also **visibility**.
+2. `synchronized` not only guarantees **code safety**, but also ensures **happens-before**.
+
+## Atomicity
+
+What are the atomic operations in Java?
+
+1. Assignment operations for basic types(int / byte / boolean / short / char / float) other than long and double.
+2. All assignment operations that refer to reference
+3. Atomic operations for all classes in `java.concurrent.Atomic.*`
+
+**Singleton**
+
+`Singleton1.java`
+
+`Singleton2.java`
+
+`Singleton3.java`
+
+`Singleton4.java`
+
+`Singleton5.java`
+
+`Singleton6.java`
+
+`Singleton7.java`
+
+`Singleton8.java`
