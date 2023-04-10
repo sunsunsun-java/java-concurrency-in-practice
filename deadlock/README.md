@@ -31,7 +31,15 @@ Not giving way to each other - Deadlock occurs when multiple threads hold resour
 2. Detection recovery strategy - Check for deadlocks once in a while, and if so, strip a resource to release the deadlock.
 3. ostrich strategy - sticking one's head in the sand.
 
+## How to avoid deadlocks?
 
+1. Set timeout time
+2. Use more concurrent classes
+3. Minimize the granularity of the use of locks
+4. Try to use synchronous code blocks and specify the lock object yourself
+5. Give meaningful names to threads
+6. Avoid nesting of locks
+7. Try not to use the same lock for several functions - special lock for special use
 
 # LiveLock
 
