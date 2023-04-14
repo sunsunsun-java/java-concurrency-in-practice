@@ -1,6 +1,5 @@
 package locks.lock;
 
-import java.sql.Time;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
