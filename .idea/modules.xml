@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/basic-synchronized/basic-synchronized.iml" filepath="$PROJECT_DIR$/basic-synchronized/basic-synchronized.iml" />
+      <module fileurl="file://$PROJECT_DIR$/concurrency-tools-practice/concurrency-tools-practice.iml" filepath="$PROJECT_DIR$/concurrency-tools-practice/concurrency-tools-practice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deadlock/deadlock.iml" filepath="$PROJECT_DIR$/deadlock/deadlock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/java-concurrency-in-practice.iml" filepath="$PROJECT_DIR$/.idea/java-concurrency-in-practice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmm/jmm.iml" filepath="$PROJECT_DIR$/jmm/jmm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/thread-core-fundamentals/thread-core-fundamentals.iml" filepath="$PROJECT_DIR$/thread-core-fundamentals/thread-core-fundamentals.iml" />
+    </modules>
+  </component>
+</project>
