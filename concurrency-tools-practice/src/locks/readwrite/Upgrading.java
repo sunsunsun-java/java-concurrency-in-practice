@@ -6,9 +6,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @Description: 演示ReentrantReadWriteLock可以降级，不能升级
  */
 public class Upgrading {
-    private static ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
-    private static ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
-    private static ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
+    private static final ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
+    private static final ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
 
     private static void readUpgrading() {
         readLock.lock();
@@ -44,12 +44,12 @@ public class Upgrading {
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("先演示降级是可以的");
-        Thread thread1 = new Thread(() -> writeDowngrading(), "Thread1");
+        Thread thread1 = new Thread(Upgrading::writeDowngrading, "Thread1");
         thread1.start();
         thread1.join();
         System.out.println("------------------");
         System.out.println("演示升级是不行的");
-        Thread thread2 = new Thread(() -> readUpgrading(), "Thread2");
+        Thread thread2 = new Thread(Upgrading::readUpgrading, "Thread2");
         thread2.start();
     }
 }
