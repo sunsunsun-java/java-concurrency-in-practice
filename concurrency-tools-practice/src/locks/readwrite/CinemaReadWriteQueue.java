@@ -7,9 +7,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class CinemaReadWriteQueue {
     
-    private static ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
-    private static ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
-    private static ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
+    private static final ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
+    private static final ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
     
     private static void read() {
         readLock.lock();

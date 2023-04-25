@@ -7,9 +7,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class NonfairBargeDemo {
     
-    private static ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
-    private static ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
-    private static ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(true);
+    private static final ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
+    private static final ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
     
     private static void read() {
         System.out.println(Thread.currentThread().getName() + "开始尝试获取读锁");

@@ -4,7 +4,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * @Description:
+ * @Description: 相比与CountDownLatch而言，CyclicBarrier能重置并再次使用。
  */
 public class CyclicBarrierDemo {
     
@@ -15,7 +15,7 @@ public class CyclicBarrierDemo {
         }
     }
     
-    static record Task(int id, CyclicBarrier cyclicBarrier) implements Runnable {
+    record Task(int id, CyclicBarrier cyclicBarrier) implements Runnable {
         @Override
         public void run() {
             try {

@@ -33,6 +33,4 @@ public class CountDownLatchDemo2 {
         begin.countDown();
         service.shutdown();
     }
-    
-    
 }
